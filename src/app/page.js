@@ -22,12 +22,15 @@ export default function Home() {
   const [bg, setBg] = useState("")
   const [face, setFace] = useState("")
   const [tw, setTw] = useState("")
+  const [PFPbg, setPFPBg] = useState("")
+  const [PFPface, setPFPFace] = useState("")
+  const [PFPtw, setPFPTw] = useState("")
   const [driveUrl, setDriveUrl] = useState("")
   const [copied, setCopied] = useState(false)
   const [pfp, setPfp] = useState(false)
   const [inpu, setInpu] = useState(false)
   const [fix, setFixed] = useState("items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
-
+  const [PFPUrl, setPFPUrl] = useState("")
 
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
 
@@ -67,8 +70,44 @@ export default function Home() {
 
     //setMingleImage('https://ipfs.io/ipfs/' + urlImage[2] + "/" + id + ".png")
 
-    let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
-    setDriveUrl(finalURL)
+    if (i == 4355) {
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 5453){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 4927){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 4288){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 4245){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 4175){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 4163){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 3154){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 1172){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else if (i == 698){
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+    } else {
+      let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
+      setDriveUrl(finalURL)
+  
+      let pfpurl = "https://d9emswcmuvawb.cloudfront.net/PFP" + id + ".png"
+      setPFPUrl(pfpurl)
+    }
+
     setInpu(true)
     setFixed("fixed md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
   }
@@ -79,8 +118,49 @@ export default function Home() {
       .then(function (blob) {
         saveAs(blob, name);
       });
-
   }
+
+  {/*const savepfpImage = async () => {/////////////////////////
+
+    const mingleContract = new ethers.Contract(CONTRACT, ABI, provider)
+
+    for (let i = 1; i < 5556; i++) {
+
+      if (i == 4355)continue
+      if (i == 5453)continue
+      if (i == 4927)continue
+      if (i == 4288)continue
+      if (i == 4245)continue
+      if (i == 4175)continue
+      if (i == 4163)continue
+      if (i == 3154)continue
+      if (i == 1172)continue
+      if (i == 698)continue
+
+      const metadataMingles = await mingleContract.tokenURI(i)
+
+      let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + i
+      let meta = await fetch(url)
+      let dataJson = await meta.json()
+      let BG = await dataJson.attributes[0].value
+      const pfpbg = "/assets/PFP/BG/" + BG + ".png"
+
+      let FACE = await dataJson.attributes[5].value
+      const pfpface = "/assets/PFP/Face/" + FACE + ".png"
+
+      let TW = await dataJson.attributes[4].value
+      const pfptw = "/assets/PFP/Tequila Worm/" + TW + ".png"
+
+      const name = "PFP" + i + ".png"
+      await mergeImages([pfpbg, pfptw, pfpface])
+        .then(function (blob) {
+          saveAs(blob, name);
+        });
+      
+      console.log(name)
+
+    }
+  }*/}
 
   const savepfp = async () => {
     const name = "PFPMingle#" + id + ".png"
@@ -117,8 +197,6 @@ export default function Home() {
     <div className={fix}>
 
       <h1 className={(styles.title, "text-4xl text-black font-[family-name:var(--font-hogfish)]")}>CONGRATULATIONS</h1>
-
-
 
       {!inpu && (
         <div className="text-center space-y-2 mb-6">
@@ -191,7 +269,7 @@ export default function Home() {
               <div className="mt-10">
                 <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
 
-                <Image className="my-2 my-5" id="mingle" src={driveUrl} alt="PFP Mingle" width={300} height={300} />
+                <Image className="my-2 my-5" id="mingle" src={PFPUrl} alt="PFP Mingle" width={300} height={300} />
 
                 <button
                   className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
