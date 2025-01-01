@@ -8,6 +8,7 @@ import { useState } from "react";
 import { ethers } from "ethers";
 import { ABI } from "../../ABI";
 import { TwitterShareButton } from "react-twitter-embed";
+import Link from "next/link";
 
 
 export default function Home() {
@@ -24,12 +25,21 @@ export default function Home() {
   const [driveUrl, setDriveUrl] = useState("")
   const [copied, setCopied] = useState(false)
   const [pfp, setPfp] = useState(false)
+  const [inpu, setInpu] = useState(false)
 
 
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
 
   const truePfp = () => {
     setPfp(true)
+
+  }
+
+  const resetAll = () => {
+    setPfp(false)
+    setInpu(false)
+    setId("")
+    setBg("")
   }
 
   const getMingleMetadata = async () => {
@@ -56,7 +66,7 @@ export default function Home() {
 
     let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
     setDriveUrl(finalURL)
-
+    setInpu(true)
   }
 
   const saveImage = async () => {
@@ -104,24 +114,29 @@ export default function Home() {
 
       <h1 className={(styles.title, "text-4xl text-black font-[family-name:var(--font-hogfish)]")}>CONGRATULATIONS</h1>
 
-      <p className={"text-xl mt-5 mb-2 text-black font-[family-name:var(--font-pressura)]"}>Mingles:APED ID #</p>
 
-      <div className="text-center space-y-2 mb-6">
-        <input placeholder="Mingle ID" className={"text-black text-center text-base border border-red-500  rounded-md font-[family-name:var(--font-pressura)]"} onChange={e => setId(e.target.value)}></input>
-        <button
-          className="ms-2 center uppercase rounded-lg bg-red-500 p-1 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-          data-ripple-light="true"
-          onClick={getMingleMetadata}
-        >Check Mingle
-        </button>
-      </div>
+
+      {!inpu && (
+        <div className="text-center space-y-2 mb-6">
+          <p className={"text-xl mt-5 mb-2 text-black font-[family-name:var(--font-pressura)]"}>Mingles:APED ID #</p>
+          <input placeholder="Mingle ID" className={"text-black text-center text-base border border-red-500  rounded-md font-[family-name:var(--font-pressura)]"} onChange={e => setId(e.target.value)}></input>
+          <button
+            className="ms-2 center uppercase rounded-lg bg-red-500 p-1 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true"
+            onClick={getMingleMetadata}
+          >Check Mingle
+          </button>
+        </div>
+      )
+
+      }
 
       {bg != "" && (
 
 
         <div className="justify-items-center text-center space-y-5 space-x-2">
 
-          <p className="text-xl text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle</p>
+          <p className="text-xl text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle #{id}</p>
           <div className="rounded-">
             <ScratchCard onComplete={truePfp} finishPercent={60} brushSize={40} width={300} height={300}>
 
@@ -135,18 +150,24 @@ export default function Home() {
           </div>
           <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Scratch the above card by swiping on it</p>
 
-          <button
-            className="ms-2 center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            data-ripple-light="true"
-            onClick={saveImage}
-          >Download
-          </button>
-          <button
-            className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-            data-ripple-light="true"
-            onClick={getImage} ////////////////////// falta   //////////
-          >Copy to Share on x
-          </button>
+          {pfp && (
+            <>
+              <button
+                className="ms-2 center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                data-ripple-light="true"
+                onClick={saveImage}
+              >Download
+              </button>
+              <button
+                className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                data-ripple-light="true"
+                onClick={getImage} ////////////////////// falta   //////////
+              >Copy to Share on x
+              </button>
+            </>
+          )
+
+          }
           {copied && (
             <>
               <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Use CTRL+V on X</p>
@@ -164,20 +185,20 @@ export default function Home() {
           {pfp &&
             (
               <div className="mt-10">
-            <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
+                <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
 
-            <Image className="my-2 my-5" id="mingle" src={driveUrl} alt="PFP Mingle" width={300} height={300} />
+                <Image className="my-2 my-5" id="mingle" src={driveUrl} alt="PFP Mingle" width={300} height={300} />
 
-            <button
-              className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              data-ripple-light="true"
-              onClick={savepfp}
-            >
-            
-              Download
-   
-            </button>
-          </div>
+                <button
+                  className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                  data-ripple-light="true"
+                  onClick={savepfp}
+                >
+
+                  Download
+
+                </button>
+              </div>
             )
           }
 
@@ -188,7 +209,7 @@ export default function Home() {
       )
       }
 
-      <Image className="mt-4" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={200} height={200} />
+      <Link onClick={resetAll} href={"/"}><Image className="mt-4" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} /></Link>
     </div>
 
   );
