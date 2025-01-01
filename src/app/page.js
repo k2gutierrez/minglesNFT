@@ -33,7 +33,7 @@ export default function Home() {
 
   const truePfp = () => {
     setPfp(true)
-    setFixed("items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+    setFixed("items-center px-5 justify-items-center max-h-screen px-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
   }
 
@@ -70,7 +70,7 @@ export default function Home() {
     let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
     setDriveUrl(finalURL)
     setInpu(true)
-    setFixed("fixed items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+    setFixed("fixed md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
   }
 
   const saveImage = async () => {
