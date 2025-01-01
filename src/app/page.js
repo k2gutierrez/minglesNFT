@@ -26,12 +26,14 @@ export default function Home() {
   const [copied, setCopied] = useState(false)
   const [pfp, setPfp] = useState(false)
   const [inpu, setInpu] = useState(false)
+  const [fix, setFixed] = useState("items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
 
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
 
   const truePfp = () => {
     setPfp(true)
+    setFixed("items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
   }
 
@@ -40,6 +42,7 @@ export default function Home() {
     setInpu(false)
     setId("")
     setBg("")
+    setCopied(false)
   }
 
   const getMingleMetadata = async () => {
@@ -67,6 +70,7 @@ export default function Home() {
     let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
     setDriveUrl(finalURL)
     setInpu(true)
+    setFixed("fixed items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
   }
 
   const saveImage = async () => {
@@ -110,7 +114,7 @@ export default function Home() {
   }
 
   return (
-    <div className=" items-center justify-items-center min-h-screen p-10 pb-5 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className={fix}>
 
       <h1 className={(styles.title, "text-4xl text-black font-[family-name:var(--font-hogfish)]")}>CONGRATULATIONS</h1>
 
@@ -134,7 +138,7 @@ export default function Home() {
       {bg != "" && (
 
 
-        <div className="justify-items-center text-center space-y-5 space-x-2">
+        <div className={"justify-items-center text-center space-y-5 space-x-2"}>
 
           <p className="text-xl text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle #{id}</p>
           <div className="rounded-">
@@ -209,7 +213,7 @@ export default function Home() {
       )
       }
 
-      <Link onClick={resetAll} href={"/"}><Image className="mt-4" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} /></Link>
+      <Link onClick={resetAll} href={"/"}><Image className="mt-2" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} /></Link>
     </div>
 
   );
