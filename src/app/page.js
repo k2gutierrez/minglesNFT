@@ -23,9 +23,14 @@ export default function Home() {
   const [tw, setTw] = useState("")
   const [driveUrl, setDriveUrl] = useState("")
   const [copied, setCopied] = useState(false)
+  const [pfp, setPfp] = useState(false)
 
 
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
+
+  const truePfp = () => {
+    setPfp(true)
+  }
 
   const getMingleMetadata = async () => {
     setBg("")
@@ -95,13 +100,13 @@ export default function Home() {
   }
 
   return (
-    <div className=" items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className=" items-center justify-items-center min-h-screen p-10 pb-5 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
 
       <h1 className={(styles.title, "text-4xl text-black font-[family-name:var(--font-hogfish)]")}>CONGRATULATIONS</h1>
 
       <p className={"text-xl mt-5 mb-2 text-black font-[family-name:var(--font-pressura)]"}>Mingles:APED ID #</p>
 
-      <div className="text-center space-y-2 mb-10">
+      <div className="text-center space-y-2 mb-6">
         <input placeholder="Mingle ID" className={"text-black text-center text-base border border-red-500  rounded-md font-[family-name:var(--font-pressura)]"} onChange={e => setId(e.target.value)}></input>
         <button
           className="ms-2 center uppercase rounded-lg bg-red-500 p-1 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -116,9 +121,9 @@ export default function Home() {
 
         <div className="justify-items-center text-center space-y-5 space-x-2">
 
-          <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle</p>
+          <p className="text-xl text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle</p>
           <div className="rounded-">
-            <ScratchCard finishPercent={60} brushSize={40} width={300} height={300}>
+            <ScratchCard onComplete={truePfp} finishPercent={60} brushSize={40} width={300} height={300}>
 
               {/*<Image src={bg} className="" alt="BG" width={300} height={300} />
               <Image src={tw} className={styles.divabsolute} alt="Face" width={300} height={300} />
@@ -156,7 +161,9 @@ export default function Home() {
           }
 
 
-          <div className="mt-10">
+          {pfp &&
+            (
+              <div className="mt-10">
             <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
 
             <Image className="my-2 my-5" id="mingle" src={driveUrl} alt="PFP Mingle" width={300} height={300} />
@@ -171,6 +178,8 @@ export default function Home() {
    
             </button>
           </div>
+            )
+          }
 
 
 
@@ -179,7 +188,7 @@ export default function Home() {
       )
       }
 
-      <Image className="mt-10" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={200} height={200} />
+      <Image className="mt-4" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={200} height={200} />
     </div>
 
   );
