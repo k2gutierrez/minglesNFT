@@ -1,101 +1,209 @@
+'use client'
 import Image from "next/image";
+import styles from "./profile.module.css";
+import { saveAs } from "file-saver";
+import mergeImages from "merge-images";
+import { ScratchCard } from "next-scratchcard";
+import { useState } from "react";
+import { ethers } from "ethers";
+import { ABI } from "../../ABI";
+import { TwitterShareButton } from "react-twitter-embed";
+
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const CONTRACT = '0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E'
+  //let functionMetadata = 'tokenURI'
+  //let metadataTest = 'https://ipfs.io/ipfs/QmcoeRsFYeHzPD9Gx84aKD3tjLUKjvPEMSmoPs2GQmHR1t/1'
+  //let imageTest = 'https://ipfs.io/ipfs/QmY3DR3EKhLsZx1Dx1vM8HRc2xXvwjCJ6shdHV6pavc7eL/1.png'
+  //const [mingleImage, setMingleImage] = useState("")
+  const [id, setId] = useState("")
+  const [bg, setBg] = useState("")
+  const [face, setFace] = useState("")
+  const [tw, setTw] = useState("")
+  const [driveUrl, setDriveUrl] = useState("")
+  const [copied, setCopied] = useState(false)
+
+
+  const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
+
+  const getMingleMetadata = async () => {
+    setBg("")
+    setFace("")
+    setTw("")
+    const mingleContract = new ethers.Contract(CONTRACT, ABI, provider)
+    if (id == "") return
+    const metadataMingles = await mingleContract.tokenURI(id)
+
+    let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + id
+    let meta = await fetch(url)
+    let dataJson = await meta.json()
+    let BG = dataJson.attributes[0].value
+    setBg("/assets/BG/" + BG + ".png")
+    let FACE = dataJson.attributes[5].value
+    setFace("/assets/Face/" + FACE + ".png")
+    let TW = dataJson.attributes[4].value
+
+    setTw("/assets/Tequila Worm/" + TW + ".png")
+    //let urlImage = dataJson.image.split("/")
+
+    //setMingleImage('https://ipfs.io/ipfs/' + urlImage[2] + "/" + id + ".png")
+
+    let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
+    setDriveUrl(finalURL)
+
+  }
+
+  const saveImage = async () => {
+    const name = "Mingle#" + id + ".png"
+    mergeImages([bg, tw, face])
+      .then(function (blob) {
+        saveAs(blob, name);
+      });
+
+  }
+
+  const savepfp = async () => {
+    const name = "PFPMingle#" + id + ".png"
+    const imge = document.getElementById("mingle")
+    const data = await fetch(imge.src)
+    const blob = await data.blob()
+      .then(function (blob) {
+        saveAs(blob, name);
+      });
+
+  }
+
+  const getImage = async () => {
+    const imge = document.getElementById("mingle")
+    const data = await fetch(imge.src)
+    const blob = await data.blob()
+
+    try {
+      const a = await navigator.clipboard.write([
+        new ClipboardItem({
+          [blob.type]: blob,
+        })
+      ])
+      setCopied(true)
+      console.log("Success")
+
+    } catch (e) {
+      console.error(e)
+    }
+
+  }
+
+  return (
+    <div className=" items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+
+      <h1 className={(styles.title, "text-4xl text-black font-[family-name:var(--font-hogfish)]")}>CONGRATULATIONS</h1>
+
+      <p className={"text-xl mt-5 mb-2 text-black font-[family-name:var(--font-pressura)]"}>Mingles:APED ID #</p>
+
+      <div className="text-center space-y-2 mb-10">
+        <input className={"text-black text-center text-base rounded-md font-[family-name:var(--font-pressura)]"} onChange={e => setId(e.target.value)}></input>
+        <button
+          className="ms-2 center uppercase rounded-lg bg-red-500 p-1 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          data-ripple-light="true"
+          onClick={getMingleMetadata}
+        >Check Mingle
+        </button>
+      </div>
+
+      {bg != "" && (
+
+
+        <div className="justify-items-center text-center space-y-5 space-x-2">
+
+          <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle</p>
+          <div className="rounded-">
+            <ScratchCard finishPercent={60} brushSize={40} width={300} height={300}>
+
+              {/*<Image src={bg} className="" alt="BG" width={300} height={300} />
+              <Image src={tw} className={styles.divabsolute} alt="Face" width={300} height={300} />
+              <Image src={face} className={styles.divabsolute} alt="Tequila Worm" width={300} height={300} />*/}
+              <Image id="mingle" src={driveUrl} className={styles.divabsolute} alt="Tequila Worm" width={300} height={300} />
+
+
+            </ScratchCard>
+          </div>
+          <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Scratch the above card by swiping on it</p>
+
+          <button
+            className="ms-2 center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true"
+            onClick={saveImage}
+          >Download
+          </button>
+          <button
+            className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+            data-ripple-light="true"
+            onClick={getImage} ////////////////////// falta   //////////
+          >Copy to Share on x
+          </button>
+          {copied && (
+            <>
+              <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Use CTRL+V on X</p>
+              <div className="text-2xl">
+                <TwitterShareButton
+                  url="are finally unbottled! @minglesnft Tequila Worm"
+
+                />
+              </div>
+            </>
+          )
+          }
+
+
+          <div className="mt-10">
+            <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
+
+            <Image className="my-2 my-5" id="mingle" src={driveUrl} alt="PFP Mingle" width={300} height={300} />
+
+            <button
+              className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              data-ripple-light="true"
+              onClick={savepfp}
+            >
+            
+              Download
+   
+            </button>
+          </div>
+
+
+
+
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )
+      }
+
+      <Image className="mt-10" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={200} height={200} />
     </div>
+
   );
 }
+
+{/**
+
+  <button type="button" onClick={getMingleMetadata}>get image</button>
+      <button type="button" onClick={getImage}>save Imnage</button>
+
+      <TwitterShareButton url={driveUrl} />
+
+  <ScratchCard finishPercent={40} brushSize={30} width={500} height={500}>
+              <div className={styles.customnft}>
+                <Image src={bg} className={styles.customimage} alt="BG" width={500} height={500} />
+                <Image src={tw} className={styles.divabsolute} alt="Face" width={500} height={500} />
+                <Image src={face} className={styles.divabsolute} alt="Tequila Worm" width={500} height={500} />
+              </div>
+            </ScratchCard>
+
+            <p>Scratch the above card by swiping on it</p>
+
+            <div>
+              <button type="button" onClick={saveImage}>Download</button>
+            </div>
+  
+  */}
