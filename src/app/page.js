@@ -36,7 +36,7 @@ export default function Home() {
 
   const truePfp = () => {
     setPfp(true)
-    setFixed("items-center px-5 justify-items-center max-h-screen px-7 pt-5 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+    setFixed("text-center px-5 justify-items-center min-h-screen px-7 pt-5 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
   }
 
@@ -122,7 +122,7 @@ export default function Home() {
     const blob = await data.blob()
 
     try {
-      const a = await navigator.clipboard.write([
+      navigator.clipboard.write([
         new ClipboardItem({
           [blob.type]: blob,
         })
@@ -137,9 +137,10 @@ export default function Home() {
   }
 
   return (
+
     <div className={fix}>
 
-      <h1 className={"text-4xl text-black font-[family-name:var(--font-hogfish)]"}>CONGRATULATIONS</h1>
+      <h1 className={"text-center text-4xl text-black font-[family-name:var(--font-hogfish)]"}>CONGRATULATIONS</h1>
 
       {!inpu && (
         <div className="text-center space-y-2 mb-6">
@@ -159,11 +160,11 @@ export default function Home() {
       {bg != "" && (
 
 
-        <div className={"justify-items-center text-center space-y-5 space-x-2"}>
+        <div className={"text-center space-y-5 space-x-2"}>
 
           <p className="text-xl text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle #{id}</p>
-          <div className="rounded-">
-            <ScratchCard onComplete={truePfp} finishPercent={60} brushSize={40} width={300} height={300}>
+          <div className="flex justify-center">
+            <ScratchCard onComplete={truePfp} finishPercent={50} brushSize={40} width={300} height={300}>
 
               {/*<Image src={bg} className="" alt="BG" width={300} height={300} />
               <Image src={tw} className={styles.divabsolute} alt="Face" width={300} height={300} />
@@ -196,7 +197,7 @@ export default function Home() {
           {copied && (
             <>
               <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Use CTRL+V on X</p>
-              <div className="text-2xl">
+              <div className="flex justify-center">
                 <TwitterShareButton
                   url="are finally unbottled! @minglesnft Tequila Worm"
 
@@ -209,11 +210,11 @@ export default function Home() {
 
           {pfp &&
             (
-              <div className="mt-10">
+              <div className="mt-10 text-center">
                 <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
-
-                <Image className="my-2 my-5" id="pfpmingle" src={PFPUrl} alt="PFP Mingle" width={300} height={300} />
-
+                <div className="flex justify-center">
+                  <Image className="my-2 my-5 text-center" id="pfpmingle" src={PFPUrl} alt="PFP Mingle" width={300} height={300} />
+                </div>
                 <button
                   className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                   data-ripple-light="true"
@@ -234,8 +235,14 @@ export default function Home() {
       )
       }
 
-      <Link onClick={resetAll} href={"/"}><Image className="mt-2" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} /></Link>
+
+      <div className="flex justify-center mt-2 ">
+        <Link href={"/"} onClick={resetAll}>
+          <Image className="" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} />
+        </Link>
+      </div>
     </div>
+
 
   );
 }
