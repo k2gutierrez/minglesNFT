@@ -9,9 +9,17 @@ import { ethers } from "ethers";
 import { ABI } from "../../ABI";
 import { TwitterShareButton } from "react-twitter-embed";
 import Link from "next/link";
+import Router from "next/router";
 
 
 export default function Home() {
+
+  const geturl = () => {
+    Router.push({
+      pathname: '/'+id,
+      query: {id: id}
+    })
+  }
 
   const CONTRACT = '0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E'
   //let functionMetadata = 'tokenURI'
@@ -70,7 +78,7 @@ export default function Home() {
       let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + id
       let meta = await fetch(url)
       let dataJson = await meta.json()
-      console.log("json", dataJson)
+
       let BG = dataJson.attributes[0].value
       setBg("/assets/BG/" + BG + ".png")
       let FACE = dataJson.attributes[5].value
@@ -162,7 +170,7 @@ export default function Home() {
 
         <div className={"text-center space-y-5 space-x-2"}>
 
-          <p className="text-xl text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle #{id}</p>
+          <p className="text-md text-center text-black my-1 font-[family-name:var(--font-pressura)]">Scratch to unbottle your Baby Mingle #{id}</p>
           <div className="flex justify-center">
             <ScratchCard onComplete={truePfp} finishPercent={50} brushSize={40} width={300} height={300}>
 
@@ -174,7 +182,7 @@ export default function Home() {
 
             </ScratchCard>
           </div>
-          <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Scratch the above card by swiping on it</p>
+          <p className="text-md text-center text-black my-3 font-[family-name:var(--font-pressura)]">Scratch the above card by swiping on it</p>
 
           {pfp && (
             <>
@@ -198,6 +206,7 @@ export default function Home() {
             <>
               <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Use CTRL+V on X</p>
               <div className="flex justify-center">
+                
                 <TwitterShareButton
                   url="are finally unbottled! @minglesnft Tequila Worm"
 
