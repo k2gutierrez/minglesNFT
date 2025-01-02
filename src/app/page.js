@@ -60,7 +60,7 @@ export default function Home() {
       setDriveUrl("/assets/1of1s.png")
       setPFPUrl("/assets/1of1s.png")
       setInpu(true)
-      setFixed("fixed md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+      setFixed("fixed block md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
     }
 
