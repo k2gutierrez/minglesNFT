@@ -25,6 +25,9 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "Mingles",
   description: "What's your Mingle",
+  icons: {
+    icon: '/favicon.ico', // /public path
+  },
 };
 
 export default function RootLayout({ children }) {
