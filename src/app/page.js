@@ -22,21 +22,21 @@ export default function Home() {
   const [bg, setBg] = useState("")
   const [face, setFace] = useState("")
   const [tw, setTw] = useState("")
-  const [PFPbg, setPFPBg] = useState("")
-  const [PFPface, setPFPFace] = useState("")
-  const [PFPtw, setPFPTw] = useState("")
+  //const [PFPbg, setPFPBg] = useState("")
+  //const [PFPface, setPFPFace] = useState("")
+  //const [PFPtw, setPFPTw] = useState("")
   const [driveUrl, setDriveUrl] = useState("")
   const [copied, setCopied] = useState(false)
   const [pfp, setPfp] = useState(false)
   const [inpu, setInpu] = useState(false)
-  const [fix, setFixed] = useState("items-center justify-items-center max-h-screen pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+  const [fix, setFixed] = useState("items-center justify-items-center max-h-screen pt-5 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
   const [PFPUrl, setPFPUrl] = useState("")
 
   const provider = new ethers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_NODE)
 
   const truePfp = () => {
     setPfp(true)
-    setFixed("items-center px-5 justify-items-center max-h-screen px-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+    setFixed("items-center px-5 justify-items-center max-h-screen px-7 pt-5 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
   }
 
@@ -54,117 +54,60 @@ export default function Home() {
     setTw("")
     const mingleContract = new ethers.Contract(CONTRACT, ABI, provider)
     if (id == "") return
-    const metadataMingles = await mingleContract.tokenURI(id)
 
-    let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + id
-    let meta = await fetch(url)
-    let dataJson = await meta.json()
-    let BG = dataJson.attributes[0].value
-    setBg("/assets/BG/" + BG + ".png")
-    let FACE = dataJson.attributes[5].value
-    setFace("/assets/Face/" + FACE + ".png")
-    let TW = dataJson.attributes[4].value
+    if (id == 4355 || id == 5453 || id == 4927 || id == 4288 || id == 4245 || id == 4175
+      || id == 4163 || id == 3154 || id == 1172 || id == 698) {
+      setDriveUrl("/assets/1of1s.png")
+      setPFPUrl("/assets/1of1s.png")
+      setInpu(true)
+      setFixed("fixed md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
 
-    setTw("/assets/Tequila Worm/" + TW + ".png")
-    //let urlImage = dataJson.image.split("/")
-
-    //setMingleImage('https://ipfs.io/ipfs/' + urlImage[2] + "/" + id + ".png")
-
-    if (i == 4355) {
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 5453){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 4927){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 4288){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 4245){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 4175){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 4163){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 3154){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 1172){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else if (i == 698){
-      setDriveUrl("/assets/1of1s.png")
-      setPFPUrl("/assets/1of1s.png")
-    } else {
-      let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
-      setDriveUrl(finalURL)
-  
-      let pfpurl = "https://d9emswcmuvawb.cloudfront.net/PFP" + id + ".png"
-      setPFPUrl(pfpurl)
     }
 
-    setInpu(true)
-    setFixed("fixed md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+    try {
+      const metadataMingles = await mingleContract.tokenURI(id)
+
+      let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + id
+      let meta = await fetch(url)
+      let dataJson = await meta.json()
+      console.log("json", dataJson)
+      let BG = dataJson.attributes[0].value
+      setBg("/assets/BG/" + BG + ".png")
+      let FACE = dataJson.attributes[5].value
+      setFace("/assets/Face/" + FACE + ".png")
+      let TW = dataJson.attributes[4].value
+
+      setTw("/assets/Tequila Worm/" + TW + ".png")
+      //let urlImage = dataJson.image.split("/")
+      //setMingleImage('https://ipfs.io/ipfs/' + urlImage[2] + "/" + id + ".png")
+
+      let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
+      setDriveUrl(finalURL)
+
+      let pfpurl = "https://d9emswcmuvawb.cloudfront.net/PFP" + id + ".png"
+      setPFPUrl(pfpurl)
+
+      setInpu(true)
+      setFixed("fixed md:left-1/3 items-center justify-items-center max-h-screen px-5 pt-7 pb-1 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]")
+    } catch (e) {
+      console.error(e)
+    }
+
   }
 
   const saveImage = async () => {
     const name = "Mingle#" + id + ".png"
-    mergeImages([bg, tw, face])
+    const imge = document.getElementById("mingle")
+    const data = await fetch(imge.src)
+    const blob = await data.blob()
       .then(function (blob) {
         saveAs(blob, name);
       });
   }
 
-  {/*const savepfpImage = async () => {/////////////////////////
-
-    const mingleContract = new ethers.Contract(CONTRACT, ABI, provider)
-
-    for (let i = 1; i < 5556; i++) {
-
-      if (i == 4355)continue
-      if (i == 5453)continue
-      if (i == 4927)continue
-      if (i == 4288)continue
-      if (i == 4245)continue
-      if (i == 4175)continue
-      if (i == 4163)continue
-      if (i == 3154)continue
-      if (i == 1172)continue
-      if (i == 698)continue
-
-      const metadataMingles = await mingleContract.tokenURI(i)
-
-      let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + i
-      let meta = await fetch(url)
-      let dataJson = await meta.json()
-      let BG = await dataJson.attributes[0].value
-      const pfpbg = "/assets/PFP/BG/" + BG + ".png"
-
-      let FACE = await dataJson.attributes[5].value
-      const pfpface = "/assets/PFP/Face/" + FACE + ".png"
-
-      let TW = await dataJson.attributes[4].value
-      const pfptw = "/assets/PFP/Tequila Worm/" + TW + ".png"
-
-      const name = "PFP" + i + ".png"
-      await mergeImages([pfpbg, pfptw, pfpface])
-        .then(function (blob) {
-          saveAs(blob, name);
-        });
-      
-      console.log(name)
-
-    }
-  }*/}
-
   const savepfp = async () => {
     const name = "PFPMingle#" + id + ".png"
-    const imge = document.getElementById("mingle")
+    const imge = document.getElementById("pfpmingle")
     const data = await fetch(imge.src)
     const blob = await data.blob()
       .then(function (blob) {
@@ -196,7 +139,7 @@ export default function Home() {
   return (
     <div className={fix}>
 
-      <h1 className={(styles.title, "text-4xl text-black font-[family-name:var(--font-hogfish)]")}>CONGRATULATIONS</h1>
+      <h1 className={"text-4xl text-black font-[family-name:var(--font-hogfish)]"}>CONGRATULATIONS</h1>
 
       {!inpu && (
         <div className="text-center space-y-2 mb-6">
@@ -269,7 +212,7 @@ export default function Home() {
               <div className="mt-10">
                 <h1 className={(styles.title, "text-4xl mt-10 text-black font-[family-name:var(--font-hogfish)]")}>PFP FORMAT</h1>
 
-                <Image className="my-2 my-5" id="mingle" src={PFPUrl} alt="PFP Mingle" width={300} height={300} />
+                <Image className="my-2 my-5" id="pfpmingle" src={PFPUrl} alt="PFP Mingle" width={300} height={300} />
 
                 <button
                   className="center uppercase rounded-lg bg-red-500 p-2 font-[family-name:var(--font-pressura)] text-sm font-bold  text-white shadow-md shadow-red-500/20 transition-all hover:shadow-lg hover:shadow-red-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
@@ -297,25 +240,44 @@ export default function Home() {
   );
 }
 
-{/**
+{/*const savepfpImage = async () => {/////////////////////////
 
-  <button type="button" onClick={getMingleMetadata}>get image</button>
-      <button type="button" onClick={getImage}>save Imnage</button>
+    const mingleContract = new ethers.Contract(CONTRACT, ABI, provider)
 
-      <TwitterShareButton url={driveUrl} />
+    for (let i = 1; i < 5556; i++) {
 
-  <ScratchCard finishPercent={40} brushSize={30} width={500} height={500}>
-              <div className={styles.customnft}>
-                <Image src={bg} className={styles.customimage} alt="BG" width={500} height={500} />
-                <Image src={tw} className={styles.divabsolute} alt="Face" width={500} height={500} />
-                <Image src={face} className={styles.divabsolute} alt="Tequila Worm" width={500} height={500} />
-              </div>
-            </ScratchCard>
+      if (i == 4355)continue
+      if (i == 5453)continue
+      if (i == 4927)continue
+      if (i == 4288)continue
+      if (i == 4245)continue
+      if (i == 4175)continue
+      if (i == 4163)continue
+      if (i == 3154)continue
+      if (i == 1172)continue
+      if (i == 698)continue
 
-            <p>Scratch the above card by swiping on it</p>
+      const metadataMingles = await mingleContract.tokenURI(i)
 
-            <div>
-              <button type="button" onClick={saveImage}>Download</button>
-            </div>
-  
-  */}
+      let url = 'https://ipfs.io/ipfs/' + metadataMingles.split("/")[2] + "/" + i
+      let meta = await fetch(url)
+      let dataJson = await meta.json()
+      let BG = await dataJson.attributes[0].value
+      const pfpbg = "/assets/PFP/BG/" + BG + ".png"
+
+      let FACE = await dataJson.attributes[5].value
+      const pfpface = "/assets/PFP/Face/" + FACE + ".png"
+
+      let TW = await dataJson.attributes[4].value
+      const pfptw = "/assets/PFP/Tequila Worm/" + TW + ".png"
+
+      const name = "PFP" + i + ".png"
+      await mergeImages([pfpbg, pfptw, pfpface])
+        .then(function (blob) {
+          saveAs(blob, name);
+        });
+      
+      console.log(name)
+
+    }
+  }*/}
