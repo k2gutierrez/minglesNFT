@@ -5,6 +5,7 @@
 :root {
   --background: #EDEDD9;
   --foreground: #171717;
+  -webkit-text-size-adjust: none;
 }
 
 @media (prefers-color-scheme: dark) {
