@@ -237,10 +237,14 @@ export default function Home() {
       }
 
 
-      <div className="flex justify-center mt-2 ">
+      <div className="text-center mt-2">
         <Link href={"/"} onClick={resetAll}>
-          <Image className="" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} />
+          <p className="text-black font-[family-name:var(--font-hogfish)]">Try another</p>
+          
         </Link>
+        <div className="flex justify-center">
+        <Image className="" src={"/assets/MinglesLogo_Black 2.png"} alt="Mingles Logo" width={150} height={150} />
+        </div>
       </div>
     </div>
 
