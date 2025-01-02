@@ -9,17 +9,9 @@ import { ethers } from "ethers";
 import { ABI } from "../../ABI";
 import { TwitterShareButton } from "react-twitter-embed";
 import Link from "next/link";
-import Router from "next/router";
 
 
 export default function Home() {
-
-  const geturl = () => {
-    Router.push({
-      pathname: '/'+id,
-      query: {id: id}
-    })
-  }
 
   const CONTRACT = '0x6579cfD742D8982A7cDc4C00102D3087F6c6dd8E'
   //let functionMetadata = 'tokenURI'
@@ -205,10 +197,10 @@ export default function Home() {
           {copied && (
             <>
               <p className="text-xl text-center text-black my-3 font-[family-name:var(--font-pressura)]">Use CTRL+V on X</p>
-              <div className="flex justify-center">
+              <div className="flex justify-center me-10">
                 
                 <TwitterShareButton
-                  url="are finally unbottled! @minglesnft Tequila Worm"
+                  url="are finally unbottled! @minglesnft Tequila Worms"
 
                 />
               </div>
