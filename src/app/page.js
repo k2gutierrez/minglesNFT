@@ -80,6 +80,7 @@ export default function Home() {
       setTw("/assets/Tequila Worm/" + TW + ".png")
       //let urlImage = dataJson.image.split("/")
       //setMingleImage('https://ipfs.io/ipfs/' + urlImage[2] + "/" + id + ".png")
+      //:"https://ipfs.io/bafybeifvy5vwicfrwqlpf4e2e27fmemsvsknsonnzfd43jwqxfft6nerjy"
 
       let finalURL = "https://d9emswcmuvawb.cloudfront.net/" + id + ".png"
       setDriveUrl(finalURL)
